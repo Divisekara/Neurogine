@@ -8,11 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
-public class ProductContoller {
+public class ProductController {
     @Autowired
     private ProductRepo productRepo;
 
@@ -44,12 +46,20 @@ public class ProductContoller {
         product.setName(productDetails.getName());
         product.setStock(productDetails.getStock());
         product.setPrice(productDetails.getPrice());
+//        product.setAttributes(productDetails.getAttributes());
 
-        return ResponseEntity.ok(this.productRepo.save(product));
+        final ProductDetails updatedProduct = productRepo.save(product);
+        return ResponseEntity.ok(updatedProduct);
     }
 
-    // patch product
-
+    @DeleteMapping("products/{id}")
+    public Map<String, Boolean> deleteProduct(@PathVariable(value = "id") Long productId) throws ResourceNotFoundException {
+        ProductDetails product = productRepo.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product not found for this id :: " + productId));
+        productRepo.delete(product);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
     // delete product
 
 

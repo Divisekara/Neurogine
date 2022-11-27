@@ -20,13 +20,13 @@ public class ProductDetails {
     private String name;
     private double price;
     private int stock;
-    private Object attributes;
+//    private Object attributes;
 
     public ProductDetails(String name, double price, int stock, Object attributes) {
         this.name = name;
         this.price = price;
         this.stock = stock;
-        this.attributes = attributes;
+//        this.attributes = attributes;
     }
 
 }
